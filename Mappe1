@@ -182,4 +182,16 @@ alle %>%
        x = "Year", 
        y = "Temprature") + 
   theme_bw()
+  
+  
+  
+#ekstra kode som eg gløymte
+ibrary(jsonlite)
+library(tidyverse)
+library(ggplot2)
+
+jason1 <- "https://static01.nyt.com/newsgraphics/2021/12/20/us-coronavirus-deaths-2021/ff0adde21623e111d8ce103fedecf7ffc7906264/scatter.json"
+
+
+df <- fromJSON(jason1)
 
