@@ -4,6 +4,7 @@ library(ggplot2)
 library(dplyr)
 
 #oppgave 1
+#Her skal ein laga eit datsett frå dataen også laga eit plott
 
 data123 <- "https://static01.nyt.com/newsgraphics/2021/12/20/us-coronavirus-deaths-2021/ff0adde21623e111d8ce103fedecf7ffc7906264/scatter.json"
 
@@ -41,10 +42,7 @@ lower death rate",
                      labels = function(x) paste0(x, "%"))
 
 #Oppgave 2
-#Komentere det ein ser etter ein har kjørt koden også si ka man ser
-#På grafen nede, ser ein at kor høgare rate av uvaksinerte dør flere og dei som er vaksinerte 
-# har lågare døds rate. Jo flere som blir vaksinert jo lågare blir dødsraten pr 100 000 
-#kapita i prosent 
+#KHer skal ein bruke lm for å spesifisere datsaettet også tilapsse linjen.
 
 lm(deaths_per_100k ~ fully_vaccinated, data= covid19new)
 
@@ -69,4 +67,8 @@ lower death rate",
            size = 4)+
   scale_x_continuous(breaks = c(45,50,55,60,65,70,75,80),
                      labels = function(x) paste0(x, "%"))
+#Komentere det ein ser etter ein har kjørt koden også si ka man ser
+#På grafen nede, ser ein at kor høgare rate av uvaksinerte dør flere og dei som er vaksinerte 
+# har lågare døds rate. Jo flere som blir vaksinert jo lågare blir dødsraten pr 100 000 
+#kapita i prosent 
 
