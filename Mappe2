@@ -43,6 +43,7 @@ lower death rate",
 
 #Oppgave 2
 #KHer skal ein bruke lm for å spesifisere datsaettet også tilapsse linjen.
+#lm gjlr om dataen standaravvik til gjennomsnittet, brukes i eit stort datasett
 
 lm(deaths_per_100k ~ fully_vaccinated, data= covid19new)
 
