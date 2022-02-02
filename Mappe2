@@ -5,21 +5,21 @@ library(dplyr)
 
 #oppgave 1
 
-jason1 <- "https://static01.nyt.com/newsgraphics/2021/12/20/us-coronavirus-deaths-2021/ff0adde21623e111d8ce103fedecf7ffc7906264/scatter.json"
+data123 <- "https://static01.nyt.com/newsgraphics/2021/12/20/us-coronavirus-deaths-2021/ff0adde21623e111d8ce103fedecf7ffc7906264/scatter.json"
 
 
-df <- fromJSON(jason1)
+df <- fromJSON(data123)
 
-covid19 <- df
+covid19new <- df
 
-covid19 <- covid19 %>% 
+covid19new <- covid19new %>% 
   mutate(fully_vaccinated = fully_vaccinated_pct_of_pop*100)
 
-covid19 <- covid19 %>%
-  mutate(short_name = abbreviate(covid19$name, minlength=2))
+covid19new <- covid19new %>%
+  mutate(short_name = abbreviate(covid19new$name, minlength=2))
 
 
-covid19 %>% ggplot(aes(x= fully_vaccinated, y= deaths_per_100k)) +
+covid19new %>% ggplot(aes(x= fully_vaccinated, y= deaths_per_100k)) +
   geom_point(aes(colour=name)) + 
   geom_smooth(method="loess", se=F) +
   labs(title= "Covid-19 relaterte dødsfall i USA i forhold til vaksinerte og uvaksinerte", 
@@ -28,12 +28,12 @@ covid19 %>% ggplot(aes(x= fully_vaccinated, y= deaths_per_100k)) +
   theme_gray()+ 
   geom_text(aes(label = short_name), adj = -0.2, cex = 3.5)+
   annotate("text", x= 60, y =17, 
-           label = "       🢄 Lower vaccination rate, 
+           label = "      <-- Lower vaccination rate, 
 higher death rate",
            col = "black",
            size = 4) +
   annotate("text", x= 73, y =9, 
-           label = "       🢆 Higher vaccination rate, 
+           label = "       <--  Higher vaccination rate, 
 lower death rate",
            col = "black",
            size = 4)+
@@ -46,10 +46,10 @@ lower death rate",
 # har lågare døds rate. Jo flere som blir vaksinert jo lågare blir dødsraten pr 100 000 
 #kapita i prosent 
 
-lm(deaths_per_100k ~ fully_vaccinated, data= covid19)
+lm(deaths_per_100k ~ fully_vaccinated, data= covid19new)
 
 
-covid19 %>% ggplot(aes(x= fully_vaccinated, y= deaths_per_100k)) +
+covid19new %>% ggplot(aes(x= fully_vaccinated, y= deaths_per_100k)) +
   geom_point(aes(colour=name)) + 
   geom_smooth(method= lm) +
   labs(title= "Covid-19 relaterte dødsfall i USA i forhold til vaksinerte og uvaksinerte", 
@@ -69,3 +69,4 @@ lower death rate",
            size = 4)+
   scale_x_continuous(breaks = c(45,50,55,60,65,70,75,80),
                      labels = function(x) paste0(x, "%"))
+
