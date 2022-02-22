@@ -1,0 +1,74 @@
+library(tidyverse)
+library(readr)
+library(xml2)
+library(rverst)
+library(ggplot2)
+library(janitor)
+
+
+#"Oppgave 1
+
+#lLaste inn netttsiden og begynne å fikse den
+webside <- read_html("https://www.motor.no/aktuelt/motors-store-vintertest-av-rekkevidde-pa-elbiler/217132/bil")
+
+tables <- webside %>% html_table(fill = TRUE)
+
+#trekke ut dei rette ledda til oppgåven 
+batteribil <- tables[[1]]
+batteribil <-batteribil[-1,]
+
+# sjekker hav som er i overskriftene på tabellen 
+colnames(batteribil)
+
+#gjøre om til df og fjerne dei unødige rekkene i lista
+batteribil <- batteribil %>%
+  na_if('x') %>%
+  na.omit()
+
+
+#fikser tabbelnavna på colonnene 
+colnames(batteribil) <- c("Modell (temp. varierte fra 0° til -10°)", "WLTP", "Stopp", "Avvik")
+batteribil
+batteribil <- batteribil %>% 
+  mutate(WLTP = as.numeric(gsub("km.*", "", WLTP)))
+batteribil <- batteribil %>% 
+  mutate(Stopp = as.numeric(gsub("km.*", "", Stopp)))
+
+batteribil
+
+
+#wltp er måleeinheten for bruket på bilen , inkudert co2 og rekkevidde (lovet lenge)
+#stopp er kor bilen har stoppa etter kjøring
+
+#oppgåve 1 sitt plott 
+#Lage plottet som er i oppgåven også men som er utvidet og fikset 
+
+batteribil %>% ggplot(aes(x = WLTP, y = Stopp)) +
+  geom_point() +
+  labs(title= "Rekkevidde på EL-bil", 
+       x= "WLTP", 
+       y= "Stopp") +
+  theme_gray() +
+  scale_y_continuous(limits = c(200, 600)) +
+  scale_x_continuous(limits = c(200, 600)) +
+  geom_abline(col = "red",
+              size = 1)
+
+# oppgåve 2
+# Bruker lm for å finne årsaksammenhengn mellom wltp og stopp hos EL-bilene 
+# som vil sei den lova lengden og hvor EL-bilen fakstisk stoppet.
+# Den viser korelasjonen(årsakssammenheng) mellom dei
+# Lager også eit nytt plott som viser sammenhengen
+lm(Stopp ~ WLTP, data=batteribil)
+
+batteribil %>% ggplot(aes(x=WLTP, y= Stopp)) +
+  geom_point() +
+  geom_smooth(method=lm)  +
+  labs(title= "Årsakssammenheng rekkevidde EL-bil", 
+       x= "WLTP", 
+       y= "Stopp") +
+  theme_gray()
+
+
+
+
