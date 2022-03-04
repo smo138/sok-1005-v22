@@ -1,0 +1,63 @@
+library(rvest)
+library(tidyverse)
+library(rlist)
+library(purrr)
+
+# henta inn timeplanen 
+url <-"https://timeplan.uit.no/emne_timeplan.php?sem=22v&module%5B%5D=SOK-1005-1&week=1-20&View=list&module[]=SOK-1006-1&module[]=SOK-1016-1#week-9=list"
+
+
+sida <- read_html(url)
+
+#Eit table kvar veka og tvinga dei inn til ei lista
+table <- html_nodes(sida, 'table') 
+table <- html_table(table, fill=TRUE) 
+
+table[[1]]
+dframe <- list.stack(table) # få lista inn til ein data frame 
+
+colnames(dframe) <- dframe[1,]
+
+dframe <- dframe %>% filter(!Dato=="Dato")
+
+#Dele opp dato i to linjer fordi det ser bedre ut.
+dframe <- dframe %>% separate(Dato, 
+                              into = c("Dag", "Dato"), 
+                              sep = "(?<=[A-Za-z])(?=[0-9])")
+
+#Kode inn til data formate, lage ein veke variabel
+dframe$Dato <- as.Date(dframe$Dato, format="%d.%m.%Y")
+
+dframe$Uke <- strftime(dframe$Dato, format = "%V")
+
+# velg og fjerna NA
+dframe <- dframe %>% select(Dag,Dato,Uke,Tid,Rom)
+dframe
+str(dframe)
+
+dframe <- na.omit(dframe) 
+
+# her skal ein bruka ma for å få ein meir effektiv kode, sånn at det går fortarde uten alt det unødige
+
+#liker at me skal bruke map for at det skal ve lettare og meir ryddig men synst å rydde opp ein kode viker meir 
+# smart og lettvindt 
+#alle sin r er forkejllig ein kode kan funka på ein men ikkje på alle.
+
+url1 <- read_html("https://timeplan.uit.no/emne_timeplan.php?sem=22v&module[]=SOK-1005-1#week-9=list")
+
+
+url2 <- read_html("https://timeplan.uit.no/emne_timeplan.php?sem=22v&module[]=SOK-1006-1#week-9=list")
+
+
+url3 <- read_html("https://timeplan.uit.no/emne_timeplan.php?sem=22v&module[]=SOK-1016-1#week-9=list")
+
+
+map(url1, "Dato")
+
+map(url1, url2, url3)
+
+map(url1, mean)
+map(url2, mean)
+map(url3, mean)
+
+mydata <- map_df(url1, read_html(.,stringsAsFactors=FALSE))
