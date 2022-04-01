@@ -237,6 +237,7 @@ print(str(s)[:1000])
 import pandas as pd
 g = pd.read_csv("barbiesalg.csv")#reading data
 g
+```
 
 
 ```python
