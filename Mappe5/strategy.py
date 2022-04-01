@@ -2,7 +2,7 @@ import numpy as np
 import blotto
 
 
-# her forandrer eg strategi sånn at eg sånn ca vinner hver gang med 2 poeng, har ikkje tapt endå men du vet aldrig 
+# her forandrer eg strategi sånn at eg sånn vinner hver gang med 2 poeng, har ikkje tapt endå men du vet aldrig 
 def player_strategy(n_battalions,n_fields):
     #defining the array:
     battalions=np.zeros(n_fields,dtype=int)
