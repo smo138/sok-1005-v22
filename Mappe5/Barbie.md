@@ -251,7 +251,7 @@ Y= 'Gross sales in million U.S. dollars'
 from matplotlib import pyplot as plt
 
 fig,ax=plt.subplots()
-plt.plot(X, Y, 'o')
+plt.plot(log(X, Y, 'o'))
 ```
 
 
