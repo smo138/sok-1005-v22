@@ -75,11 +75,6 @@ print(str(table)[:1000])
 
 
 
-```python
-';'.join(table[0])
-```
-
-
 
 
     'Characteristic;Gross sales in million U.S. dollars'
