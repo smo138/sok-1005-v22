@@ -1,7 +1,9 @@
 from pywebio.input import *
 from pywebio.output import *
 
-input("What's your name?")
-select("Select food", ['Orange', 'Apple'])
-checkbox("Are your okay?", options=["I'm okay."])
-radio("What do you like to do?", options=['Eat', 'Sleep', 'Study'])
+input("Hva er navnet ditt?")
+select("Velg frukt", ['Melon', 'Tomat'])
+checkbox("Går det bra?", options=["Jævla bra."])
+radio("Hva liker du å gjøre?", options=['Eta', 'Sova', 'Skule'])
+
+
