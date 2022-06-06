@@ -1,0 +1,62 @@
+library(ggplot2)
+library(fredr)
+
+#her setter vi api.keyn frå FRED
+fredr_set_key('ccdff55c472040b0e1665c5fb2640384')
+
+#Her søker vi etter oljeprisen på FRED nettsiden
+search_ls1 <- fredr_series_search_text("crude oil prices: brent - europe")
+
+#Her åpner vi oljeprisen for å se kolnavna for å finne den første / den som er mest relevant for oss
+colnames(search_ls1)
+
+# her setter vi den første variablen i kolvana til en tibble for å se hva dei heter og hvordan dei ser ut
+informasjon <- as_tibble(fredr_series_search_text('id'))
+
+#Her setter vi den id´n vi ser som mest relevent for oss
+series_ls1 <-fredr_series_observations(series_id = "DCOILBRENTEU") 
+
+#her konventere vi det om til en dataframe
+series_df <- do.call(cbind.data.frame, series_ls1)
+
+#Her plotter vi 
+ggplot(series_df) + 
+  geom_line(mapping = aes(x=date, y=value)) 
+  
+
+library(fredr)
+library(ggplot2)
+
+
+# vi bruker samme api key som over 
+fredr_set_key('ccdff55c472040b0e1665c5fb2640384')
+
+#søker opp realvalyttaen til Norge
+search_ls2 <- fredr_series_search_text("real broad effective exchange rate for norway")
+
+##Her åpner vi realvaluttaen for å se kolnavna for å finne den første / den som er mest relevant for oss
+colnames(search_ls2)
+
+# her gjør vi idn om til en tibbel for å se navna
+informasjon1 <- as_tibble(fredr_series_search_text('id'))
+
+# her bruker vi den idn som var mest relevant for oss
+series_ls2 <-fredr_series_observations(series_id = "RBNOBIS") 
+
+# her konventerer vi om til dataframe 
+series_df1 <- do.call(cbind.data.frame, series_ls2)
+
+# Her plotter vi 
+ggplot(series_df1) +
+  geom_line(mapping = aes(x=date, y=value))
+  
+# her setter vi sammen realvalauttaen og oljeprisen, vi setter en limits på år 
+#slik det blir likt som i arbeidsarket
+ggplot() + 
+  geom_line(data = series_df, aes(x = date, y = value), color = "red") +
+  geom_line(data = series_df1, aes(x = date, y = value), color = "blue") +
+  xlab('date') +
+  ylab('value')+ 
+  scale_x_date(limits = as.Date(c('2012-01-01','2022-01-01')))
+
+#kilde https://www.supplychaindataanalytics.com/188-2/
